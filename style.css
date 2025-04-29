@@ -1,0 +1,323 @@
+body {
+    font-family: sans-serif;
+    margin: 0; /* Ensure no default margin */
+    /* background-color: #e5ddd5; /* WhatsApp chat background color - Remove or comment out */
+    display: flex; /* Keep flex to center content if needed, though 100% width/height fills */
+    justify-content: center; /* Still centers horizontally if container is smaller than viewport */
+    align-items: center; /* Still centers vertically if container is smaller than viewport */
+    /* min-height: 100vh; /* Remove this, container will handle height */
+    background-color: #f0f0f0; /* Default light background for the access screen and body */
+}
+
+.chat-container {
+    width: 100vw; /* Take up 100% of the viewport width */
+    height: 100vh; /* Take up 100% of the viewport height */
+    /* max-width: 600px; /* Remove this to allow it to fill wide screens */
+    /* height: 95vh; /* Replace this with 100vh */
+    background-color: #f0f0f0; /* A light background, though chat area will overlay this */
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Subtle shadow - keep or remove as desired */
+    overflow: hidden; /* Hide anything outside the container */
+}
+
+/* Initially hide the chat display */
+#chatDisplay {
+    display: none; /* Hide the chat until access is granted */
+}
+
+
+/* Header Styling */
+.header {
+    background-color: rgb(231, 231, 231); /* WhatsApp header green */
+    color: black;
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0; /* Prevent header from shrinking */
+}
+
+.profile-pic {
+    width: 40px;
+    height: 40px;
+    /* background-color: #ccc; /* Removed or commented out */
+    border-radius: 50%; /* Make it round */
+    margin-right: 15px;
+    background-image: url('images/profile-pic.jpg'); /* <-- Updated path */
+    background-size: cover; /* Ensures the image covers the circle */
+    background-position: center; /* Centers the image within the circle */
+}
+
+.contact-info {
+    flex-grow: 1; /* Allow contact info to take up available space */
+}
+
+.contact-name {
+    /* font-weight: bold; */
+    font-size: 1.1em;
+}
+
+/* Chat Area Styling */
+.chat-area {
+    flex-grow: 1; /* Allow chat area to take up remaining space */
+    padding: 20px 15px;
+    overflow-y: auto; /* Enable scrolling */
+    background-image: url('images/wp_background.png'); /* You can use a background image like WhatsApp */
+    background-size: cover;
+}
+
+/* Date Indicator Styling */
+.date-indicator {
+    text-align: center;
+    margin: 15px 0;
+    font-size: 0.8em;
+    color: #555;
+    position: sticky; /* Make it stick to the top of the viewport as you scroll */
+    top: 0;
+    z-index: 1; /* Ensure it's above messages when sticking */
+    background-color: rgba(229, 221, 213, 0.8); /* Slightly transparent background */
+    padding: 5px 10px;
+    border-radius: 10px;
+    width: fit-content; /* Adjust width to content */
+    margin-left: auto;
+    margin-right: auto; /* Center the date bubble */
+}
+
+/* Message Styling */
+.message {
+    max-width: 80%; /* Limit message width */
+    margin-bottom: 10px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    position: relative; /* Needed for timestamp positioning */
+    word-wrap: break-word; /* Break long words */
+}
+
+.message p {
+    margin: 0 0 5px 0; /* Add space below message text */
+    padding-right: 40px; /* Make space for timestamp */
+}
+
+.message .timestamp {
+    position: absolute;
+    bottom: 5px; /* Position from the bottom */
+    right: 8px; /* Position from the right */
+    font-size: 0.7em;
+    color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+}
+
+/* Receiver Message Styling */
+.message.received {
+    background-color: #ffffff; /* White background */
+    align-self: flex-start; /* Align to the left */
+    margin-right: auto; /* Push to the left */
+}
+
+/* Sender Message Styling */
+.message.sent {
+    background-color: #dcf8c6; /* WhatsApp green background */
+    align-self: flex-end; /* Align to the right */
+    margin-left: auto; /* Push to the right */
+}
+
+/* Flexbox alignment for messages */
+.chat-area {
+    display: flex;
+    flex-direction: column; /* Stack messages vertically */
+}
+
+/* Scrollbar Styling for Webkit browsers (Chrome, Safari, Edge) */
+.chat-area::-webkit-scrollbar {
+    width: 6px;  /* Adjust width for a thinner scrollbar */
+}
+
+.chat-area::-webkit-scrollbar-track {
+    background: transparent; /* Make the track transparent */
+}
+
+.chat-area::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2); /* Semi-transparent black thumb */
+    border-radius: 10px; /* Rounded corners for the thumb */
+}
+
+/* Optional: Style on hover */
+.chat-area::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0, 0, 0, 0.3); /* Slightly darker on hover */
+}
+
+/* For Firefox (less styling options) */
+/* This makes it thinner but doesn't hide the track */
+.chat-area {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.2) transparent; /* thumb color track color */
+}
+
+
+/* --- New CSS for Access Code Screen --- */
+.access-container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f0f0f0; /* Match body background */
+    /* Ensure it's above the chat when active */
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10; /* High z-index to be on top */
+}
+
+.access-box {
+    background-color: #ffffff; /* White box */
+    padding: 30px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    max-width: 400px; /* Limit box width */
+    width: 90%; /* Make it responsive */
+}
+
+.access-box h2 {
+    color: #075e54; /* WhatsApp green */
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+.access-box p {
+    color: #555;
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+.access-box input[type="password"] {
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: calc(100% - 22px); /* Adjust width for padding and border */
+    font-size: 1em;
+}
+
+.access-box button {
+    background-color: #128c7e; /* WhatsApp slightly lighter green for buttons */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.2s ease;
+}
+
+.access-box button:hover {
+    background-color: #075e54; /* Darker green on hover */
+}
+
+.error {
+    color: #d32f2f; /* Red color for errors */
+    margin-top: 10px;
+    font-size: 0.9em;
+    min-height: 1em; /* Reserve space to prevent layout shift */
+}
+
+
+/* --- Dark Mode Styling --- */
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #1e1e1e; /* Dark background */
+        color: #eee; /* Light text */
+    }
+
+    .chat-container,
+    .access-container {
+        background-color: #1e1e1e; /* Dark background for main containers */
+    }
+
+    .header {
+        background-color: #2a2f32; /* Darker header in dark mode */
+        color: #eee; /* Lighter text in header */
+    }
+
+     /* Adjust contact name color in dark mode header */
+    .header .contact-name {
+        color: #eee;
+    }
+
+
+    /* Chat Area Background - You might need a different dark mode background image */
+    .chat-area {
+         /* background-image: url('images/wp_background_dark.png'); /* <-- Optional: Dark mode background */
+         background-color: #121b22; /* Darker chat background if no image */
+    }
+
+
+    .message.received {
+        background-color: #262d31; /* Darker received bubble */
+        color: #eee; /* Light text */
+    }
+
+    .message.sent {
+        background-color: #056162; /* Darker sent bubble */
+        color: #eee; /* Light text */
+    }
+
+    .message .timestamp {
+        color: rgba(238, 238, 238, 0.6); /* Semi-transparent light timestamp */
+    }
+
+    .date-indicator {
+         background-color: rgba(38, 45, 49, 0.8); /* Darker transparent background */
+         color: #bbb; /* Lighter date text */
+    }
+
+    /* Access Code Screen Dark Mode */
+    .access-box {
+        background-color: #2a2f32; /* Darker box */
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .access-box h2 {
+        color: #128c7e; /* Keep a visible green */
+    }
+
+    .access-box p {
+        color: #bbb; /* Lighter text */
+    }
+
+    .access-box input[type="password"] {
+        background-color: #333;
+        border-color: #555;
+        color: #eee;
+    }
+
+    .access-box input[type="password"]::placeholder {
+        color: #aaa;
+    }
+
+    .access-box button {
+        background-color: #075e54; /* Darker button green */
+    }
+
+    .access-box button:hover {
+        background-color: #128c7e; /* Slightly lighter on hover */
+    }
+
+    .error {
+        color: #ef5350; /* Lighter red for visibility */
+    }
+
+    /* Scrollbar Styling for Webkit browsers in Dark Mode */
+    .chat-area::-webkit-scrollbar-thumb {
+        background-color: rgba(255, 255, 255, 0.2); /* Semi-transparent white thumb */
+    }
+
+    .chat-area::-webkit-scrollbar-thumb:hover {
+        background-color: rgba(255, 255, 255, 0.3); /* Slightly lighter on hover */
+    }
+
+    /* For Firefox in Dark Mode */
+    .chat-area {
+        scrollbar-color: rgba(255, 255, 255, 0.2) transparent; /* thumb color track color */
+    }
+}
